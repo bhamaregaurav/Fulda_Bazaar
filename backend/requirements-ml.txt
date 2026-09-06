@@ -1,0 +1,5 @@
+# Optional: the message toxicity filter.
+#   pip install -r requirements.txt -r requirements-ml.txt
+# and set ENABLE_TOXICITY=true.
+# Adds ~2GB to the image and needs ~1.5GB RAM, so it is off by default.
+tensorflow==2.15.0

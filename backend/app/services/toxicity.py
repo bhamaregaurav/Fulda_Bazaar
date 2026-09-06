@@ -1,23 +1,64 @@
-import pathlib, pickle, functools, numpy as np, tensorflow as tf
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from app.services.text_clean import clean
+"""Optional toxicity filter for chat messages.
+
+TensorFlow adds roughly 2GB to the image and ~1.5GB of resident memory, so it
+is opt-in: set ENABLE_TOXICITY=true and install requirements-ml.txt. When
+disabled, is_toxic() always returns False and TensorFlow is never imported.
+
+The model is loaded on first use rather than at import, so even with the filter
+enabled the app starts immediately and pays the cost only once a message is
+actually checked.
+"""
+import functools
+import os
+import pathlib
+import pickle
+import threading
 
 MAX_LEN = 200
-THRESH  = 0.55
-_BASE   = pathlib.Path(__file__).parent.parent / "ML"
+THRESH = 0.55
+_BASE = pathlib.Path(__file__).parent.parent / "ML"
 
-# ⬇ choose ONE line that matches what you exported
-_MODEL = tf.keras.models.load_model(_BASE / "NoisyBazaarUP.h5", compile=False)
-# _MODEL = tf.keras.models.load_model(_BASE / "NoisyBazaar_savedmodel", compile=False)
+ENABLED = os.getenv("ENABLE_TOXICITY", "false").lower() in ("1", "true", "yes")
 
-with open(_BASE / "tokenizer.pkl", "rb") as fh:
-    _TOKENIZER = pickle.load(fh)
+_lock = threading.Lock()
+_model = None
+_tokenizer = None
+_pad_sequences = None
+
+
+def _load():
+    """Import TensorFlow and load the model. Called once, on first check."""
+    global _model, _tokenizer, _pad_sequences
+    if _model is not None:
+        return
+    with _lock:
+        if _model is not None:
+            return
+        import tensorflow as tf
+        from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+        _pad_sequences = pad_sequences
+        _model = tf.keras.models.load_model(_BASE / "NoisyBazaarUP.h5", compile=False)
+        with open(_BASE / "tokenizer.pkl", "rb") as fh:
+            _tokenizer = pickle.load(fh)
+
 
 @functools.lru_cache(maxsize=1024)
 def _score_once(text: str) -> float:
-    seq = _TOKENIZER.texts_to_sequences([clean(text)])
-    X   = pad_sequences(seq, maxlen=MAX_LEN, padding="post", truncating="post")
-    return float(_MODEL.predict(X, verbose=0)[0][0])
+    from app.services.text_clean import clean
+
+    _load()
+    seq = _tokenizer.texts_to_sequences([clean(text)])
+    X = _pad_sequences(seq, maxlen=MAX_LEN, padding="post", truncating="post")
+    return float(_model.predict(X, verbose=0)[0][0])
+
 
 async def is_toxic(text: str) -> bool:
-    return _score_once(text) >= THRESH
+    if not ENABLED:
+        return False
+    try:
+        return _score_once(text) >= THRESH
+    except Exception as e:
+        # A missing model or absent TensorFlow must not break messaging.
+        print(f"WARNING: toxicity check unavailable ({e}); allowing message")
+        return False

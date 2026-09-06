@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from typing import Union, Optional
 import os
 
-from app.core.gcs import bucket as _bucket
+from app.core.storage import storage
 
 router = APIRouter()
 
@@ -71,9 +71,9 @@ async def register(
         
         # Upload to GCP bucket
         blob_name = f"profiles/{email}/{profile_picture.filename}"
-        blob = _bucket.blob(blob_name)
-        blob.upload_from_file(profile_picture.file, content_type=profile_picture.content_type)
-        profile_picture_url = blob.public_url
+        profile_picture_url = storage.upload(
+            blob_name, profile_picture.file, profile_picture.content_type
+        )
     
     # Create user data object
     user_data = UserCreateInternal(

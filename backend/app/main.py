@@ -1,6 +1,7 @@
 import os
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from app.admin.api import router as admin_router
 from .api import auth , listings, get_listings, get_categories
@@ -34,6 +35,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# With STORAGE_BACKEND=local, uploads live on disk and are served from here.
+# With s3 they are served by S3/CloudFront and this mount is unused.
+from app.core.storage import storage, LocalStorage  # noqa: E402
+
+if isinstance(storage, LocalStorage):
+    app.mount(storage.prefix, StaticFiles(directory=storage.root), name="media")
+
 
 @app.get("/api/health")
 def read_root():

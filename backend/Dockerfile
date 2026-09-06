@@ -21,6 +21,10 @@ COPY alembic.ini .
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
+# uploads land here when STORAGE_BACKEND=local
+RUN mkdir -p /app/media
+
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# entrypoint.sh takes a subcommand: serve | migrate | seed | dev
+CMD ["serve"]

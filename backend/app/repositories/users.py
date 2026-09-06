@@ -6,7 +6,6 @@ from ..core.security import hash_password
 
 import os
 
-from app.core.gcs import bucket as _bucket
 
 
 async def get_by_email(db: AsyncSession, email: str):

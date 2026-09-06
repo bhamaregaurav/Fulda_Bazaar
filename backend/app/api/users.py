@@ -27,7 +27,7 @@ import time
 router = APIRouter(prefix="/users", tags=["Users"])
 
 # ─────────────────────────────  GCS client  ───────────────────────────────
-from app.core.gcs import bucket as _bucket
+from app.core.storage import storage
 
 @router.get("/listings", response_model=list[userlist])
 async def get_own_listings(
@@ -124,9 +124,9 @@ async def update_own_listing(
         # Upload new images
         for idx, img in enumerate(new_images[:upload_count]):
             if img.filename:  # Only process if file is provided
-                blob = _bucket.blob(f"listings/{listing_id}/{img.filename}")
-                blob.upload_from_file(img.file, content_type=img.content_type)
-                url = blob.public_url
+                url = storage.upload(
+                    f"listings/{listing_id}/{img.filename}", img.file, img.content_type
+                )
 
                 db.add(
                     ListingImage(
@@ -228,23 +228,11 @@ async def update_profile_picture(
         await profile_picture.seek(0)
         
         # Try to delete the old profile picture if it exists
-        if current_user.profile_picture and "storage.googleapis.com" in current_user.profile_picture:
+        if current_user.profile_picture:
             try:
-                # Extract the path from the URL
-                # Format: https://storage.googleapis.com/bucket-name/path/to/file.jpg
-                old_url_parts = current_user.profile_picture.split("storage.googleapis.com/")
-                if len(old_url_parts) > 1:
-                    # Extract bucket/path
-                    bucket_path = old_url_parts[1]
-                    # Find the first slash which separates bucket from path
-                    slash_index = bucket_path.find("/")
-                    if slash_index != -1:
-                        # Extract just the path portion (without the bucket name)
-                        old_blob_path = bucket_path[slash_index + 1:]
-                        old_blob = _bucket.blob(old_blob_path)
-                        # Delete the old blob if it exists
-                        if old_blob.exists():
-                            old_blob.delete()
+                old_key = storage.key_from_url(current_user.profile_picture)
+                if old_key:
+                    storage.delete(old_key)
             except Exception as e:
                 # Log the error but continue with the upload
                 print(f"Error deleting old profile picture: {e}")
@@ -253,15 +241,9 @@ async def update_profile_picture(
         timestamp = int(time.time())
         safe_filename = profile_picture.filename.replace(" ", "_")
         blob_name = f"profiles/{current_user.email}/{timestamp}_{safe_filename}"
-        blob = _bucket.blob(blob_name)
-        
-        # Upload the file directly without setting metadata first
-        # This approach matches the working registration flow
-        blob.upload_from_file(profile_picture.file, content_type=profile_picture.content_type)
-        
-        # Get the URL - note: we're not calling make_public() which might be failing
-        # Instead relying on bucket default permissions like in registration
-        profile_picture_url = blob.public_url
+        profile_picture_url = storage.upload(
+            blob_name, profile_picture.file, profile_picture.content_type
+        )
         
         # Update user profile
         current_user.profile_picture = profile_picture_url
@@ -286,23 +268,11 @@ async def remove_profile_picture(
 ):
     """Remove the user's profile picture"""
     
-    if current_user.profile_picture and "storage.googleapis.com" in current_user.profile_picture:
+    if current_user.profile_picture:
         try:
-            # Extract the path from the URL
-            # Format: https://storage.googleapis.com/bucket-name/path/to/file.jpg
-            old_url_parts = current_user.profile_picture.split("storage.googleapis.com/")
-            if len(old_url_parts) > 1:
-                # Extract bucket/path
-                bucket_path = old_url_parts[1]
-                # Find the first slash which separates bucket from path
-                slash_index = bucket_path.find("/")
-                if slash_index != -1:
-                    # Extract just the path portion (without the bucket name)
-                    old_blob_path = bucket_path[slash_index + 1:]
-                    old_blob = _bucket.blob(old_blob_path)
-                    # Delete the old blob if it exists
-                    if old_blob.exists():
-                        old_blob.delete()
+            old_key = storage.key_from_url(current_user.profile_picture)
+            if old_key:
+                storage.delete(old_key)
         except Exception as e:
             # Log the error but continue
             print(f"Error deleting profile picture: {e}")

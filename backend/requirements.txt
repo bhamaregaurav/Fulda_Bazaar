@@ -27,13 +27,10 @@ shapely
 #seeding
 faker
 
-#GCP imports
-google-cloud-storage>=3.1.0
-google-auth>=2.20.0
+#Object storage (S3); the 'local' backend needs no extra packages
+boto3>=1.34.0
 
-#ML model packages
-# tensorflow-cpu==2.15.0
-tensorflow==2.15.0
+# ML toxicity filter is optional - see requirements-ml.txt
 
 #msg Encrypt imports
 cryptography>=42.0

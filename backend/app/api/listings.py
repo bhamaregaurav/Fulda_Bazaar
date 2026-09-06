@@ -16,7 +16,7 @@ from ..schemas.listing      import ListingOut
 router = APIRouter()
 
 # ─────────────────────────────  GCS client  ───────────────────────────────
-from app.core.gcs import bucket as _bucket
+from app.core.storage import storage
 
 # ───────────────────────────────  route  ──────────────────────────────────
 @router.post(
@@ -70,9 +70,9 @@ async def create_listing(
 
     # ─── 3. images on GCS + ListingImage rows ────────────────────────────
     for idx, img in enumerate(images):
-        blob = _bucket.blob(f"listings/{new_listing.listing_id}/{img.filename}")
-        blob.upload_from_file(img.file, content_type=img.content_type)
-        url = blob.public_url
+        url = storage.upload(
+            f"listings/{new_listing.listing_id}/{img.filename}", img.file, img.content_type
+        )
 
         db.add(
             ListingImage(

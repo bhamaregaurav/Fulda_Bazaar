@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   backend:
@@ -9,10 +8,15 @@ services:
       - .env
     volumes:
       - ./backend:/app
+      - backend_media:/app/media
     working_dir: /app
 
-    command: /app/entrypoint.sh
-    # command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    environment:
+      STORAGE_BACKEND: local
+      MEDIA_ROOT: /app/media
+      # 'dev' rebuilds the schema from the models on every boot. Local only.
+      ALLOW_DEV_ENTRYPOINT: "true"
+    command: ["dev"]
 
     depends_on:
       - mysql
@@ -52,4 +56,5 @@ services:
       ADMINER_DEFAULT_SERVER: mysql
 
 volumes:
-  mysql_data: 
+  mysql_data:
+  backend_media: 
