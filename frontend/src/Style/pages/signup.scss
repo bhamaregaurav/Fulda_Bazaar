@@ -1,0 +1,333 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.signup-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.signup-card {
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: $base-box-shadow;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+  background-color: #fff;
+
+  .error-message {
+    @include error-message;
+  }
+}
+
+.signup-card h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: $primary-text-color;
+  }
+
+  input,
+  select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: $primary-text-color;
+    transition: border 0.3s ease;
+
+    &:focus {
+      border-color: $base-green-color;
+    }
+  }
+}
+
+.email-input-group {
+  display: flex;
+  align-items: stretch; // Changed from center to stretch
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  width: 100%;
+
+  input {
+    flex: 0.6; // Further reduced to make more room for domain
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    min-width: 0;
+  }
+
+  .email-domain {
+    flex: 0.4; // Increased to ensure visibility
+    background-color: $base-green-color;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center; // Center the text
+  }
+}
+
+.password-requirements {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  border: 1px solid $base-green-color;
+
+  p {
+    margin: 0.5rem 0;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; // Add space between icon and text
+
+    .validation-icon {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    &.valid {
+      color: #28a745;
+      font-weight: 500;
+
+      .validation-icon {
+        background-color: #28a745;
+        color: white;
+      }
+    }
+
+    &.invalid {
+      color: #dc3545;
+      font-weight: 500;
+
+      .validation-icon {
+        background-color: #dc3545;
+        color: white;
+      }
+    }
+  }
+}
+
+.signup-submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 2rem;
+  background-color: $base-green-color;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: $base-green-hover-color;
+    color: white !important; // Force white text on hover
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &.disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+
+    &:hover {
+      background-color: #cccccc;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.auth-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.signin-link {
+  margin: 0;
+  text-align: center;
+  font-size: 0.95rem;
+
+  a {
+    @include link($base-green-color);
+    font-weight: 600;
+    margin-left: 0.25rem;
+    text-decoration: underline;
+
+    &:hover {
+      color: $base-green-hover-color;
+    }
+  }
+}
+
+.forgot-password {
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 10px;
+
+  a {
+    @include link($primary-text-color);
+  }
+}
+
+.signup-custom-file-upload {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #cacaca;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: $base-secondary-box-shadow;
+  align-items: center;
+
+  transition: background-color 0.3s, border-color 0.3s;
+
+  &:hover {
+    background-color: rgba(229, 231, 235, 1);
+    border-color: rgba(75, 85, 99, 1);
+  }
+}
+
+.signup-custom-file-upload .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-custom-file-upload .icon svg {
+  fill: rgba(75, 85, 99, 1);
+  width: 32px;
+  height: 32px;
+}
+
+.signup-custom-file-upload .custom-file-upload-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-custom-file-upload-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.signup-custom-file-upload-text .file-count {
+  font-weight: bolder;
+  color: rgba(75, 85, 99, 1);
+}
+
+.signup-custom-file-upload .custom-file-upload-text span {
+  color: rgba(75, 85, 99, 1);
+}
+
+.signup-custom-file-upload input {
+  display: none;
+}
+
+.signup-file-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.signup-file-preview-item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+
+  .signup-file-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: $base-secondary-box-shadow;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 7px 29px 0px;
+      filter: brightness(0.9);
+      transform: scale(1.05);
+    }
+
+  }
+}
+
+.signup-remove-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: background-color 0.2;
+
+  &:hover {
+    background-color: darken(#f44336, 10%);
+  }
+
+  img {
+    width: 15px;
+    height: 15px;
+  }
+}

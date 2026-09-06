@@ -1,0 +1,225 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: #212529;
+    color: #e9ecef;
+    font-family: "Lato", sans-serif;
+    font-style: normal;
+    line-height: 1.5;
+  }
+  
+  /* Main Section */
+  .main-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 100px;
+    height: 100vh;
+    gap: 50px;
+  }
+  
+  .image {
+    height: 500px;
+    width: 500px;
+    border-radius: 50%;
+    background-color: #FF4500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  }
+  
+  .profile {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1) saturate(1.2);
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .image:hover .profile {
+    transform: scale(1.05);
+  }
+  
+  .image::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+  }
+  
+  .about {
+    text-align: center;
+  }
+  
+  .about .name {
+    font-weight: 400;
+    font-size: clamp(2rem, 6vw, 100px);
+  }
+  
+  .about .title {
+    font-weight: 200;
+  }
+  
+  .separation {
+    color: #FF4500;
+    font-weight: 900;
+  }
+  
+  /* Secondary Section */
+  .secondary-section {
+    display: flex;
+    flex-direction: column;
+    padding: 50px 100px;
+    min-height: 100vh;
+  }
+  
+  .heading {
+    font-family: "Merriweather", serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 48px);
+    text-align: center;
+    margin-bottom: 100px;
+    position: relative;
+  }
+  
+  .about-body {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+  
+  .about-body .description,
+  .technologies .technologies-description {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #adb5bd;
+  }
+  
+  /* Technology Grid */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 10px;
+    margin-top: 30px;
+  }
+  
+  .tech-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    min-height: 44px;
+  }
+  
+  .tech-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .tech-name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  /* Contact Section */
+  .contact {
+    font-family: 'Lato', sans-serif;
+    color: #e9ecef;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+  
+  .contact-info p {
+    font-size: 18px;
+    margin-bottom: 15px;
+    line-height: 1.8;
+    color: #adb5bd;
+  }
+  
+  .contact-info strong {
+    color: #e9ecef;
+    font-weight: 600;
+  }
+  
+  .contact-link {
+    color: #FF4500;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+    min-height: 44px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .contact-link:hover,
+  .contact-link:focus {
+    color: #e9ecef;
+    text-decoration: underline;
+    outline: 2px dashed #FF4500;
+    outline-offset: 4px;
+  }
+  
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #343a40;
+    font-size: 14px;
+    color: #FF4500;
+    margin-top: 20px;
+  }
+  
+  .footer p {
+    margin: 0;
+  }
+  
+
+  @media (max-width: 1024px) {
+    .main-section {
+      flex-direction: column;
+      text-align: center;
+      height: auto;
+      padding: 60px 40px;
+    }
+  
+    .image {
+      width: 300px;
+      height: 300px;
+    }
+  
+    .tech-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .about .name {
+      font-size: clamp(1.5rem, 8vw, 40px);
+    }
+  
+    .tech-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .secondary-section {
+      padding: 30px 20px;
+    }
+  
+    .heading {
+      font-size: clamp(1.8rem, 6vw, 36px);
+    }
+  }
+  

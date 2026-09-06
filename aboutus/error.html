@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 - Page Not Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #212529;
+      color: #e9ecef;
+      font-family: "Lato", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .error-container {
+      max-width: 600px;
+    }
+
+    .error-code {
+      font-size: 10rem;
+      font-weight: 900;
+      color: #ff4500;
+      font-family: "Roboto Mono", monospace;
+    }
+
+    .error-message {
+      font-size: 1.5rem;
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+
+    .home-button {
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      color: #212529;
+      background-color: #ff4500;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .home-button:hover {
+      background-color: #e03e00;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <div class="error-code">404</div>
+    <div class="error-message">Oops! The page you're looking for doesn't exist.</div>
+    <a href="index.html" class="home-button">Go Home</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.my-adds-page {
+  min-height: 100vh;
+  padding: 2rem 0;
+
+  .my-adds-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .my-adds-title {
+    text-align: center;
+    color: #333;
+    padding: 1rem 0;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .my-adds-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .my-adds-card-status {
+    font-size: .9rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    height: fit-content;
+
+    &.active {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.1);
+    }
+
+    &.review {
+      color: orange;
+      background-color: rgba(255, 165, 0, 0.1);
+    }
+
+    &.rejected {
+      color: red;
+      background-color: rgba(255, 0, 0, 0.1);
+    }
+  }
+
+  .my-adds-card {
+    .my-add-header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+
+    gap: 20px;
+    background: #fff;
+    box-shadow: $base-box-shadow;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: $base-green-color;
+    }
+  }
+
+  .my-adds-card-title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  .my-adds-card-desc {
+    color: #555;
+    margin: 8px 0 4px 0;
+  }
+
+  .my-adds-card-price {
+    color: #888;
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .my-adds-card-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+
+    .my-adds-edit-button {
+      background-color: #FF8000;
+      padding: 0rem 0.75rem;
+      box-shadow: $base-secondary-box-shadow;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      height: 40px;
+      width: 80px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: 600;
+
+      &:hover {
+        background-color: darken(#FF8000, 10%);
+      }
+    }
+
+    .my-adds-delete-button {
+      background-color: #3cb371;
+      padding: 0rem 0.75rem;
+      box-shadow: $base-secondary-box-shadow;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      height: 40px;
+      width: 80px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: 600;
+      background-color: #f44336;
+
+      &:hover {
+        background-color: darken(#f44336, 10%);
+      }
+    }
+  }
+
+
+  .my-adds-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .my-adds-edit-form textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .my-adds-edit-form .my-adds-edit-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+
+  .my-adds-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    .my-adds-create-button {
+      background-color: #3cb371;
+      padding: 0.5rem 1rem;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      height: 50px;
+      width: 200px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: 600;
+
+      &:hover {
+        background-color: $base-green-hover-color;
+      }
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+  }
+
+
+  .my-adds-message {
+    color: #888;
+  }
+
+  .my-adds-error {
+    color: red;
+    margin-bottom: 8px;
+  }
+
+  .my-adds-success {
+    color: green;
+    margin-bottom: 8px;
+  }
+}

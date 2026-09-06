@@ -1,0 +1,9 @@
+$primary-text-color: #213446;
+$base-white-color: #fff;
+$base-green-color: #3cb371;
+// Use color.adjust instead of darken as recommended by Sass
+$base-green-hover-color: #2d8f5a; // Pre-calculated darker version of #3cb371
+$base-box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+$base-secondary-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+$base-border-radius: 8px;
+$background-color: #F4F2ED;

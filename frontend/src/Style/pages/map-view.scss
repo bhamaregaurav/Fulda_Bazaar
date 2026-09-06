@@ -1,0 +1,363 @@
+$primary-color: #00b37e; // App's primary green color
+$secondary-color: #e0e0e0; // Light gray for non-active elements
+$accent-orange: #FF5722; // Accent color for important elements
+$text-dark: #333333;
+$text-medium: #71717a;
+$text-light: #a1a1aa;
+$white: #ffffff;
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+$radius-sm: 6px;
+$radius-md: 12px;
+$radius-lg: 16px;
+
+// Add keyframes for loading spinner
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 179, 126, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 179, 126, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 179, 126, 0); }
+}
+
+// Main map container
+.map-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  width: 100%;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.5s ease;
+  
+  // Google Map Container
+  .google-map {
+    flex: 1;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  // Map Controls Panel
+  .map-controls {
+    background-color: #fff;
+    padding: 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    
+    // Radius Control Section
+    .radius-control {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      
+      label {
+        font-weight: 500;
+        color: #333;
+        min-width: 180px;
+        
+        strong {
+          color: $primary-color;
+        }
+      }
+      
+      // Radius Slider
+      .radius-slider {
+        width: 200px;
+        height: 8px;
+        background: $secondary-color; // Default background color
+        border-radius: 4px;
+        appearance: none;
+        outline: none;
+        flex: 1;
+        
+        &::-webkit-slider-thumb {
+          appearance: none;
+          width: 22px;
+          height: 22px;
+          background: white;
+          border: 2px solid $primary-color;
+          border-radius: 50%;
+          cursor: pointer;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+          transition: all 0.2s ease;
+          
+          &:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+          }
+        }
+        
+        &::-moz-range-thumb {
+          width: 22px;
+          height: 22px;
+          background: white;
+          border: 2px solid $primary-color;
+          border-radius: 50%;
+          cursor: pointer;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+          transition: all 0.2s ease;
+          
+          &:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+      
+      // Apply Button
+      .apply-radius {
+        background: $primary-color;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.2rem;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        
+        &:hover {
+          background: darken($primary-color, 10%);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+    
+    // Results Info Section
+    .results-info {
+      font-weight: 500;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      strong {
+        color: #333;
+        
+        &:last-of-type {
+          color: $primary-color;
+        }
+      }
+      
+      .loading-spinner-small {
+        animation: spin 1s linear infinite;
+        color: $primary-color;
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .map-controls {
+      flex-direction: column;
+      gap: 1rem;
+      
+      .radius-control {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        
+        .radius-slider {
+          width: 100%;
+        }
+        
+        .apply-radius {
+          width: 100%;
+        }
+      }
+      
+      .results-info {
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}
+
+// Loading and Error States
+.map-loading, .map-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  background-color: #fafafa;
+  border-radius: $radius-md;
+  font-size: 1.1rem;
+  color: $text-medium;
+  text-align: center;
+  box-shadow: $shadow-sm;
+  border: 1px solid #f0f0f0;
+  
+  .loading-content, .error-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2.5rem;
+    max-width: 600px;
+    
+    .loading-spinner {
+      animation: spin 2s linear infinite;
+      color: $primary-color;
+    }
+    
+    p {
+      margin: 0;
+      line-height: 1.6;
+      max-width: 400px;
+    }
+  }
+}
+
+// Error State Specific
+.map-error {
+  color: #e53e3e;
+  
+  .error-content {
+    svg {
+      color: #e53e3e;
+    }
+    
+    .retry-button {
+      margin-top: 1rem;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: $radius-sm;
+      padding: 0.7rem 1.5rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: darken($primary-color, 5%);
+        box-shadow: $shadow-md;
+        transform: translateY(-1px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+/* Style info window content (this will be applied via the DOM) */
+.gm-style-iw.gm-style-iw-c {
+  padding: 0 !important;
+  box-shadow: $shadow-lg !important;
+  border-radius: $radius-sm !important;
+  overflow: visible !important;
+  max-width: 300px !important;
+}
+
+.gm-style-iw-d {
+  overflow: hidden !important;
+  max-height: none !important;
+}
+
+// Info Window Styling
+.info-window {
+  padding: 0;
+  max-width: 300px;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  
+  .info-window-image {
+    height: 160px;
+    width: 100%;
+    overflow: hidden;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+  
+  .info-window-content {
+    padding: 16px;
+    
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: $text-dark;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+    }
+    
+    p {
+      margin: 4px 0;
+      
+      &.price {
+        font-weight: 600;
+        color: $accent-orange;
+        font-size: 18px;
+      }
+      
+      &.distance {
+        color: $text-medium;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        
+        &::before {
+          content: "•";
+          color: $text-light;
+          font-size: 1.2rem;
+          line-height: 0;
+        }
+      }
+    }
+    
+    .view-button {
+      width: 100%;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: $radius-sm;
+      padding: 10px;
+      margin-top: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: darken($primary-color, 5%);
+        box-shadow: $shadow-sm;
+      }
+    }
+  }
+} 

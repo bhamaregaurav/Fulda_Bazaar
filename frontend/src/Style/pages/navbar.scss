@@ -1,0 +1,112 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.navbar {
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+    border-bottom: 4px solid $base-green-color;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+        padding: 0 1rem;
+        width: 100%;
+    }
+
+    .navbar-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+
+        a {
+            @include link($base-green-color);
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: $base-green-color;
+            }
+        }
+    }
+
+    .auth-nav-links {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .signin-link {
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+
+    }
+
+    .signin-link-button,
+    .signup-link-button {
+        padding: 0.5rem 1.25rem;
+        border-radius: 20px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        background-color: $base-green-color;
+        border: 1px solid $base-green-color;
+        color: white !important; // Force white text on hover
+        box-shadow: $base-box-shadow;
+
+        &:hover {
+            background-color: $base-green-hover-color;
+            border-color: $base-green-hover-color;
+        }
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: darken(#333, 10%);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        .navbar-links {
+            padding: 1rem 0;
+
+            a {
+                font-size: .8rem;
+            }
+        }
+
+        .auth-nav-links {
+            gap: 0.5rem;
+        }
+
+        .navbar-brand {
+            font-size: 1rem;
+
+            span {
+                font-size: 1rem;
+            }
+        }
+
+        .navbar-user-btn {
+            font-size: .8rem;
+        }
+    }
+}

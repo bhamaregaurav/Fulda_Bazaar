@@ -1,0 +1,143 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html{
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-color: #212529;
+    color: #e9ecef;
+    font-family: "Lato", sans-serif;
+    line-height: 1.5;
+  }
+  
+  /* ---------------- Main Section ------------------ */
+  .main-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 15rem;
+  }
+  
+  .main-heading {
+    position: relative;
+  }
+  
+  .sub-heading {
+    position: absolute;
+    left: 26rem;
+    bottom: -2rem;
+    z-index: -1;
+    font-size: 21rem;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+    color: #ff4500;
+  }
+
+.scroll{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.scroll-down{
+    height: 25px;
+    filter: invert(35%) sepia(83%) saturate(4860%) hue-rotate(6deg) brightness(107%) contrast(103%);
+    position: absolute;
+    bottom: 1rem;
+    cursor: pointer;
+  }
+
+
+  /* ------------------------------- About team --------------------------------- */
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 4rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    height: fit-content;
+  }
+  
+  .team-member {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: #2a2e32;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .team-member:hover {
+    transform: translateY(-5px);
+  }
+  
+  .team-member img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .team-member h3 {
+    font-size: 1.5rem;
+    font-family: "Roboto Mono", monospace;
+    color: #e9ecef;
+    cursor: pointer;
+  }
+
+  .team-member a{
+    text-decoration: none;
+    color: white;
+  }
+  
+  /* Responsive behavior */
+  @media (min-width: 600px) {
+    .team-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  @media (min-width: 900px) {
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .team-member {
+      grid-template-columns: 150px 1fr;
+    }
+  }
+  
+
+  /* -------------------------- FOOTER ------------------------ */
+
+  footer {
+    background-color: #2c3e50; 
+    color: #ff4500;           
+    text-align: center;      
+    padding: 1rem 0;          
+    font-size: 0.9rem;        
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); 
+  }
+  
+  footer span {
+    display: block;
+  }
+  
+
+
+  

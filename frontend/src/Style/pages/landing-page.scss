@@ -1,0 +1,244 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.page-container {
+  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden; // Prevent horizontal scroll on mobile
+  width: 100%;
+  
+  // Ensure touch targets are adequate on mobile
+  @media (max-width: 480px) {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+}
+
+.landing-page,
+.details-page {
+  background-color: #F4F2ED;
+  color: white;
+  z-index: 0;
+  min-height: 100vh;
+  padding-bottom: 80px;
+  
+  @media (max-width: 768px) {
+    padding-bottom: 60px;
+  }
+  
+  @media (max-width: 480px) {
+    padding-bottom: 40px;
+    min-height: auto;
+  }
+}
+
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  
+  // Optimize for touch devices
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1rem 0.75rem;
+    gap: 0.8rem;
+  }
+
+  .title {
+    font-size: 9rem;
+    font-weight: bold;
+    z-index: 2;
+    color: #1A1A1A;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+    
+    // Responsive font sizes
+    @media (max-width: 1200px) {
+      font-size: 7rem;
+    }
+    
+    @media (max-width: 992px) {
+      font-size: 5.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      font-size: 4rem;
+      margin-bottom: 0.8rem;
+    }
+    
+    @media (max-width: 480px) {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    @media (max-width: 320px) {
+      font-size: 2.2rem;
+    }
+  }
+
+  .subtitle {
+    font-size: 2rem;
+    color: #1A1A1A;
+    z-index: 3;
+    margin-bottom: 2rem;
+    max-width: 90%;
+    
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    @media (max-width: 480px) {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 320px) {
+      font-size: 1rem;
+    }
+  }
+
+  .tilt-wrapper {
+    z-index: 3;
+    height: 50px;
+    width: 150px;
+    margin: 0 auto;
+    
+    @media (max-width: 480px) {
+      width: 130px;
+      height: 45px;
+    }
+    
+    @media (max-width: 320px) {
+      width: 120px;
+      height: 40px;
+    }
+
+    .get-started-tilt {
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+
+      .get-started {
+        height: 100%;
+        width: 100%;
+        border: none;
+        background-color: $base-green-color;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 100px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        @media (max-width: 480px) {
+          font-size: 0.9rem;
+        }
+        
+        @media (max-width: 320px) {
+          font-size: 0.8rem;
+        }
+
+        &:hover, &:focus {
+          background-color: darken($base-green-color, 10%);
+          transform: translateY(-2px);
+          outline: none;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        // Better touch targets for mobile
+        @media (max-width: 768px) {
+          min-height: 44px; // iOS recommended touch target size
+          
+          &:active {
+            transform: translateY(0);
+            background-color: darken($base-green-color, 15%);
+          }
+        }
+        
+        // Remove hover effects on touch devices
+        @media (hover: none) and (pointer: coarse) {
+          &:hover {
+            transform: none;
+            background-color: $base-green-color;
+          }
+        }
+      }
+
+      .get-started a {
+        @include link(#000000);
+        color: white;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.background-image,
+.foreground-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110%; // Slightly wider to avoid white space during shift
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+  transition: transform 0.1s linear;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    position: fixed; // Better performance on mobile
+  }
+  
+  @media (max-width: 480px) {
+    opacity: 0.3; // Reduce opacity for better text readability on mobile
+  }
+}
+
+.background-image {
+  z-index: 1;
+}
+
+.foreground-image {
+  z-index: 2;
+  opacity: 0.8;
+  
+  @media (max-width: 480px) {
+    opacity: 0.2;
+  }
+}
+
+.details-page {
+  color: white;
+  z-index: 0;
+  box-shadow: #1A1A1A;
+  padding: 2rem 1rem;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem 0.8rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1rem 0.5rem;
+  }
+}

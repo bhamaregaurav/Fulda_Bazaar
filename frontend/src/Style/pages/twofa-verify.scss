@@ -1,0 +1,256 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.twofa-verify-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: #F4F2EE;
+}
+
+.twofa-verify-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 20px 40px rgba(19, 52, 22, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: $primary-text-color;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.security-header {
+    margin-bottom: 3rem;
+
+    .security-icon {
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: center;
+
+        svg {
+            filter: drop-shadow(0 4px 8px rgba(136, 231, 136, 0.3));
+        }
+    }
+
+    h1 {
+        color: $primary-text-color;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+}
+
+// 2FA Code Input (inspired by the codepen)
+.form__pincode {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin: 2rem 0;
+
+    label {
+        display: block;
+        margin: 0;
+    }
+
+    input {
+        width: 3rem;
+        height: 3rem;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        background: white;
+        color: $primary-text-color;
+        transition: all 0.2s ease;
+        outline: none;
+
+        &:focus {
+            border-color: $base-green-color;
+            box-shadow: 0 0 0 3px rgba(136, 231, 136, 0.15);
+            transform: scale(1.05);
+        }
+
+        &:valid {
+            border-color: $base-green-color;
+            background: rgba(136, 231, 136, 0.05);
+        }
+
+        &::placeholder {
+            color: #bbb;
+            font-size: 1.2rem;
+        }
+
+        // Hide number input arrows
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        &[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+    }
+}
+
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+
+    legend {
+        color: $primary-text-color;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        width: 100%;
+        opacity: 0.8;
+    }
+}
+
+.error-message {
+    @include error-message;
+    margin: 1.5rem 0;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    button {
+        flex: 1;
+        padding: 0.875rem 2rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-height: 2.75rem;
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    }
+
+    .back-btn {
+        background: #f8f9fa;
+        color: $primary-text-color;
+        border: 1px solid #e9ecef;
+
+        &:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+    }
+
+    .verify-btn {
+        background: linear-gradient(135deg, $base-green-color, #66dd66);
+        color: white;
+        box-shadow: 0 4px 12px rgba(136, 231, 136, 0.3);
+
+        &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(136, 231, 136, 0.4);
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+    }
+}
+
+.help-text {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+
+    p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .help-link {
+        background: none;
+        border: none;
+        color: $base-green-color;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: underline;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: $base-green-hover-color;
+        }
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .twofa-verify-container {
+        padding: 1rem;
+    }
+
+    .twofa-verify-card {
+        padding: 2rem;
+        max-width: 100%;
+    }
+
+    .security-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .form__pincode {
+        gap: 0.5rem;
+
+        input {
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 1.2rem;
+        }
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .twofa-verify-card {
+        padding: 1.5rem;
+    }
+
+    .form__pincode {
+        gap: 0.25rem;
+
+        input {
+            width: 2.25rem;
+            height: 2.25rem;
+            font-size: 1.1rem;
+        }
+    }
+}

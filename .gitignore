@@ -1,0 +1,40 @@
+# --- Secrets: never commit these ---
+.env
+.env.*
+!.env.example
+credentials/
+*.pem
+*.key
+!*.pub
+gcp_service_account.json
+**/gcp_service_account.json
+gdsd-*.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+backend/alembic/versions/*
+!backend/alembic/versions/.gitkeep
+
+# --- Node / frontend ---
+node_modules/
+dist/
+.vite/
+*.local
+
+# --- Terraform ---
+.terraform/
+.terraform.*
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# --- Editors / OS ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

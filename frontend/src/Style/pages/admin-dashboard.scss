@@ -1,0 +1,200 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.admin-dashboard {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: $primary-text-color;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: $primary-text-color;
+  }
+
+  .tab-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    button {
+      padding: 0.5rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid $base-green-color;
+      font-weight: 600;
+      cursor: pointer;
+      color: $base-green-color;
+      transition: all 0.2s ease;
+
+      &.active {
+        background: $base-green-color;
+        color: #fff;
+        border-color: $base-green-color;
+      }
+
+      &:not(.active) {
+        background: #fff;
+        border-color: $base-green-color;
+
+        &:hover {
+          background: $base-green-color;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .table-container {
+    overflow-x: auto;
+    margin-top: 1rem;
+    border-radius: 8px;
+    border: 1px solid #eee;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    th {
+      background: #f6f8fa;
+      font-weight: 600;
+      color: $primary-text-color;
+      position: sticky;
+      top: 0;
+    }
+
+    tr {
+      border-bottom: 1px solid #eee;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: rgba(136, 231, 136, 0.05);
+      }
+    }
+  }
+
+  .action-button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.delete {
+      color: #fff;
+      background-color: #f44336;
+
+      &:hover {
+        background-color: darken(#f44336, 10%);
+      }
+
+      &.disabled {
+        background-color: #f8d7da;
+        color: #721c24;
+        cursor: not-allowed;
+        opacity: 0.7;
+
+        &:hover {
+          background-color: #f8d7da;
+          transform: none;
+        }
+      }
+    }
+
+    &.approve {
+      color: #fff;
+      background-color: $base-green-color;
+
+      &:hover {
+        background-color: $base-green-hover-color;
+      }
+    }
+  }
+
+  .role-select,
+  .status-select {
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: white;
+    min-width: 120px;
+
+    &:focus {
+      border-color: $base-green-color;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(136, 231, 136, 0.2);
+    }
+
+    option {
+      padding: 8px;
+    }
+  }
+
+  .actions-cell {
+    min-width: 220px;
+  }
+
+  .status-action-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .reason-input {
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    flex: 1;
+    min-width: 150px;
+
+    &:focus {
+      border-color: $base-green-color;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(136, 231, 136, 0.2);
+    }
+
+    &::placeholder {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+  }
+
+  .loading-message,
+  .error-message {
+    padding: 1rem;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  .loading-message {
+    background-color: #f8f9fa;
+    color: $primary-text-color;
+  }
+
+  .error-message {
+    background-color: #ffebee;
+    color: #dc3545;
+  }
+}

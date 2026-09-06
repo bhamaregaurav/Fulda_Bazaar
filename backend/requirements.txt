@@ -1,0 +1,46 @@
+# FastAPI and ASGI server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# Pydantic & settings loader
+pydantic
+pydantic-settings
+
+# Auth & security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+python-multipart==0.0.6
+email-validator
+# Async MySQL support
+sqlalchemy[asyncio]
+asyncmy
+geoalchemy2
+
+# Alembic for migrations
+alembic
+pymysql
+
+# Geospatial geometry
+shapely
+
+#seeding
+faker
+
+#GCP imports
+google-cloud-storage>=3.1.0
+google-auth>=2.20.0
+
+#ML model packages
+# tensorflow-cpu==2.15.0
+tensorflow==2.15.0
+
+#msg Encrypt imports
+cryptography>=42.0
+
+
+# 2FA Dependencies
+pyotp>=2.8.0
+qrcode[pil]>=7.4.2
+
+#video session

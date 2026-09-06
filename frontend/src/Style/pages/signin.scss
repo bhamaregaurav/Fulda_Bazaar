@@ -1,0 +1,199 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.signin-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.signin-card {
+  background-color: $base-white-color;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: $base-box-shadow;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+
+  .error-message {
+    @include error-message;
+  }
+}
+
+.signin-card h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  .email-username {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  label {
+    font-weight: 600;
+    margin-bottom: 0.5rem 8px;
+    color: #333;
+    display: block;
+    margin-top: 1rem;
+  }
+
+  input {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: $primary-text-color;
+    transition: border 0.3s ease;
+    box-shadow: $base-box-shadow;
+
+    &:focus,
+    &:hover {
+      outline: none;
+      border-color: $base-green-color;
+      background-color: #fff;
+    }
+
+
+    &::placeholder {
+      color: lighten(#333, 50%);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.email-input-group {
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  width: 100%;
+
+  input {
+    flex: 0.6;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    min-width: 0;
+  }
+
+  .email-domain {
+    flex: 0.4;
+    background-color: $base-green-color;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.signin-submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 2rem;
+  background-color: $base-green-color;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  box-shadow: $base-box-shadow;
+
+  &:hover {
+    background-color: $base-green-hover-color;
+  }
+}
+
+.auth-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.forgot-password {
+  margin: 0;
+  text-align: center;
+
+  a {
+    @include link($primary-text-color);
+
+    &:hover {
+      color: $base-green-color;
+    }
+  }
+}
+
+.signup-link {
+  margin: 0;
+  text-align: center;
+  font-size: 0.95rem;
+
+  a {
+    @include link($base-green-color);
+    font-weight: 600;
+    margin-left: 0.25rem;
+    text-decoration: underline;
+
+    &:hover {
+      color: $base-green-hover-color;
+    }
+  }
+}
+
+// Match the navbar styling for signup/signin buttons
+.signin-link-button,
+.signup-link-button {
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.signin-link-button {
+  background-color: #f8f9fa;
+  color: $base-green-color;
+  border: 1px solid $base-green-color;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+}
+
+.signup-link-button {
+  background-color: $base-green-color;
+  color: white;
+  border: 1px solid $base-green-color;
+  box-shadow: 0 4px 8px $base-box-shadow;
+
+  &:hover {
+    background-color: $base-green-hover-color;
+    border-color: $base-green-hover-color;
+    color: white !important; // Force white text on hover
+  }
+}
