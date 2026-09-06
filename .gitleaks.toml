@@ -1,0 +1,18 @@
+# Extends gitleaks' built-in rules with this repo's known-safe values.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Placeholders and fixtures that are not real credentials"
+paths = [
+  '''\.env\.example$''',
+  '''\.githooks/pre-commit$''',
+  '''package-lock\.json$''',
+]
+regexes = [
+  # dummy auth tokens in the frontend fixture list
+  '''(1234567890abcdef|abcdef1234567890){2,}''',
+  # local docker-compose development credentials
+  '''(mysql\+pymysql|mysql\+asyncmy)://admin:admin@''',
+  '''generate_your_own|change_me|your_own|your-project-id|your-bucket-name|your_maps_api_key''',
+]

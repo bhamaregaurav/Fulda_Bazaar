@@ -1,0 +1,43 @@
+#!/bin/sh
+# Blocks commits that contain credential material.
+# Enable with:  git config core.hooksPath .githooks
+# Bypass once (only if you are certain):  git commit --no-verify
+
+fail=0
+red() { printf '\033[31m%s\033[0m\n' "$1"; }
+
+# --- 1. filenames that should never be committed ---------------------------
+banned=$(git diff --cached --name-only --diff-filter=ACM | grep -iE \
+  '(^|/)\.env$|(^|/)\.env\.(local|dev|prod|production|staging)$|\.pem$|\.p12$|\.pfx$|(^|/)id_(rsa|dsa|ecdsa|ed25519)$|service[_-]?account.*\.json$|(^|/)credentials/')
+if [ -n "$banned" ]; then
+  red "BLOCKED: these files look like credential files:"
+  echo "$banned" | sed 's/^/    /'
+  fail=1
+fi
+
+# --- 2. credential material inside staged content --------------------------
+# Skip lockfiles, minified bundles and the example env file.
+files=$(git diff --cached --name-only --diff-filter=ACM | grep -vE \
+  'package-lock\.json$|\.min\.(js|css)$|\.env\.example$|(^|/)\.githooks/pre-commit$|\.gitleaks\.toml$')
+
+patterns='AIza[0-9A-Za-z_-]{35}|A(KIA|SIA|IDA|ROA|IPA|NPA|NVA)[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{60,}|sk-[A-Za-z0-9]{32,}|sk-ant-[A-Za-z0-9_-]{20,}|(sk|pk|rk)_live_[0-9a-zA-Z]{20,}|xox[baprs]-[0-9A-Za-z-]{10,}|SG\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}|glpat-[A-Za-z0-9_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+
+for f in $files; do
+  [ -f "$f" ] || continue
+  hits=$(git show ":$f" 2>/dev/null | grep -nEo "$patterns" | head -5)
+  if [ -n "$hits" ]; then
+    red "BLOCKED: credential material in $f"
+    echo "$hits" | sed 's/^/    /'
+    fail=1
+  fi
+done
+
+if [ "$fail" -ne 0 ]; then
+  cat <<'MSG'
+
+Move the value into an environment variable and read it at runtime.
+If this is genuinely a false positive:  git commit --no-verify
+MSG
+  exit 1
+fi
+exit 0

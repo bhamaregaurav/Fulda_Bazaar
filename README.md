@@ -102,6 +102,27 @@ The dev server calls the backend directly, so the backend allows
 `localhost:5173` via CORS. Override the allowed list with `CORS_ORIGINS`
 (comma-separated) in production.
 
+## Secrets
+
+No credential belongs in this repository. Everything is read from the
+environment; `.env` and `credentials/` are gitignored.
+
+Two layers guard this:
+
+- **Pre-commit hook** — blocks commits containing API keys, cloud access keys,
+  tokens or private-key blocks. Enable it once per clone:
+
+  ```bash
+  git config core.hooksPath .githooks
+  ```
+
+- **CI** — `.github/workflows/secret-scan.yml` runs gitleaks over the full
+  history on every push and pull request.
+
+If a secret does get committed, rewriting history is *not* sufficient: force-pushing
+leaves the old commits reachable by SHA on the remote. Revoke and reissue the
+credential first, then clean up the history.
+
 ## Project Structure
 
 ```
