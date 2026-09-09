@@ -25,8 +25,8 @@ Built as a team project for the *Global Distributed Software Development* course
 | Frontend | React 18, TypeScript, Vite, Redux Toolkit, SCSS, Tailwind |
 | Backend | FastAPI, SQLAlchemy 2 (async), Alembic |
 | Database | MySQL 8 |
-| Storage | Google Cloud Storage (optional) |
-| Infra | Docker Compose, Terraform, GCP |
+| Storage | Local disk (default) or Amazon S3 behind CloudFront |
+| Infra | Docker Compose; AWS (S3, CloudFront, IAM) |
 
 ## Quick Start
 
@@ -46,7 +46,7 @@ docker compose up -d --build
 
 The backend entrypoint waits for MySQL, generates and applies an Alembic
 migration, then seeds dummy data before starting uvicorn. The first boot takes a
-few minutes because the image installs TensorFlow.
+few minutes to build the images.
 
 ## Configuration
 
@@ -62,12 +62,37 @@ python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 
 `.env` is gitignored. Never commit it.
 
-### Google Cloud Storage (optional)
+### Object storage
 
-Image upload writes to a GCS bucket. Without a service-account key the app still
-starts — it logs a warning and only the upload endpoints fail. To enable it, put
-your key at `backend/gcp_service_account.json` (gitignored) and set
-`GCP_PROJECT_ID` / `GCP_BUCKET_NAME` in `.env`.
+Uploads go through one seam, `backend/app/core/storage.py`, which has two
+interchangeable backends selected by `STORAGE_BACKEND`:
+
+- **`local`** (default) — writes to `MEDIA_ROOT` and serves the files from the app
+  at `MEDIA_URL_PREFIX`. A fresh clone runs with no cloud account at all.
+- **`s3`** — uploads to an S3 bucket, served through a CloudFront distribution.
+
+Both return a public URL from `upload()` and accept it back in `key_from_url()`,
+so callers never know which is active. To use S3:
+
+```
+STORAGE_BACKEND=s3
+AWS_S3_BUCKET=your-uploads-bucket
+AWS_REGION=eu-central-1
+AWS_S3_PUBLIC_BASE_URL=https://your-distribution.cloudfront.net
+```
+
+The bucket keeps Block Public Access fully enabled. CloudFront reads it through
+an Origin Access Control — a bucket policy granting `s3:GetObject` to the
+CloudFront service principal, scoped by `SourceArn` to one distribution — so
+objects load through the CDN and return 403 directly from S3. That is why
+`AWS_S3_PUBLIC_BASE_URL` must be the CloudFront domain; pointing it at the bucket
+URL makes every image 403.
+
+Credentials use the standard boto3 chain. Running locally, supply keys for an IAM
+user restricted to this one bucket (`infra/aws/app-s3-policy.json` grants
+`PutObject`, `GetObject` and `DeleteObject` on its objects and nothing else). On
+EC2, set no keys and attach an instance role instead — boto3 finds it by itself,
+leaving no long-lived secret in the deployment.
 
 ## Local Development
 
@@ -81,8 +106,9 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-Python 3.11 is required: `requirements.txt` pins `tensorflow==2.15.0`, which has
-no wheels for 3.12+.
+Python 3.11 is recommended. The optional toxicity filter pins
+`tensorflow==2.15.0` in `requirements-ml.txt`, which has no wheels for 3.12+; the
+base `requirements.txt` has no such constraint.
 
 **Frontend:**
 
@@ -134,7 +160,8 @@ backend/          FastAPI app
   alembic/        migrations
 frontend/         React + TypeScript app
 database/         MySQL init script
-infra/            Terraform / GCP config
+infra/aws/        IAM policy and budget script
+infra/terraform_gcp/  legacy GCP Terraform, unused
 ```
 
 ## Known Limitations
@@ -145,3 +172,6 @@ infra/            Terraform / GCP config
   `alembic/versions/` is gitignored. This is convenient for development but is
   not a real migration history.
 - The seed script populates dummy users and listings; it is not idempotent.
+- `entrypoint.sh` runs the seed as `run_seed || true`, so a seeding failure does
+  not stop the container. The app then boots healthy against an unseeded
+  database and fails later with a misleading error.
