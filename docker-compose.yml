@@ -12,8 +12,10 @@ services:
     working_dir: /app
 
     environment:
-      STORAGE_BACKEND: local
-      MEDIA_ROOT: /app/media
+      # Defaults keep a fresh clone running with no cloud account. Set
+      # STORAGE_BACKEND=s3 in .env to switch to the bucket.
+      STORAGE_BACKEND: ${STORAGE_BACKEND:-local}
+      MEDIA_ROOT: ${MEDIA_ROOT:-/app/media}
       # 'dev' rebuilds the schema from the models on every boot. Local only.
       ALLOW_DEV_ENTRYPOINT: "true"
     command: ["dev"]
